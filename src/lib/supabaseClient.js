@@ -1,27 +1,9 @@
-import { useEffect, useState } from 'react';
-import { supabase } from './lib/supabaseClient';
-import AuthScreen from './screens/AuthScreen';
-import Dashboard from './screens/Dashboard';
-import './index.css';
+import { createClient } from '@supabase/supabase-js';
 
-export default function App() {
-  const [session, setSession] = useState(undefined); // undefined = loading, null = logged out
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  if (session === undefined) {
-    return <div className="app-loading">Loading...</div>;
-  }
-
-  return session ? <Dashboard session={session} /> : <AuthScreen />;
-}
+// Set these in Vercel's environment variables:
+// VITE_SUPABASE_URL=https://osaoedamapjsiqakkbgo.supabase.co
+// VITE_SUPABASE_ANON_KEY=<your anon key>
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
