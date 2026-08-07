@@ -77,6 +77,7 @@ export default function Dashboard({ session }) {
           </button>
         </section>
 
+        {/* Ledger takes over once the user has hit preview/frozen/active state; otherwise show the milestone bar */}
         {currentLedger && currentLedger.status !== 'preview' ? (
           <LedgerCard ledger={currentLedger} />
         ) : (

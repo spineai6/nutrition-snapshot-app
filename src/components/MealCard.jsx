@@ -1,31 +1,23 @@
-export default function LedgerCard({ ledger }) {
-  if (!ledger) return null;
+export default function MealCard({ meal }) {
+  const time = new Date(meal.logged_at).toLocaleString('en-IN', {
+    hour: 'numeric',
+    minute: '2-digit',
+    day: 'numeric',
+    month: 'short',
+  });
 
-  if (ledger.status === 'preview') {
-    return (
-      <div className="ledger-card preview">
-        <p className="ledger-label">Your free AI Weekly Plan</p>
-        <p className="ledger-amount">₹{ledger.savings_inr} saved this week</p>
-        <p className="ledger-sub">Real swaps, generated just for you.</p>
-      </div>
-    );
-  }
-
-  if (ledger.status === 'frozen') {
-    return (
-      <div className="ledger-card frozen">
-        <p className="ledger-label">You saved ₹{ledger.savings_inr} last week.</p>
-        <p className="ledger-sub">Upgrade to keep this going.</p>
-        <button className="ledger-upgrade-btn">Upgrade to Premium</button>
-      </div>
-    );
-  }
-
-  // active_paid
   return (
-    <div className="ledger-card active">
-      <p className="ledger-label">This week's savings</p>
-      <p className="ledger-amount">₹{ledger.savings_inr}</p>
+    <div className="meal-history-card">
+      <div className="meal-history-head">
+        <span className="meal-history-source">{meal.source === 'photo' ? '📸' : '✏️'}</span>
+        <span className="meal-history-time">{time}</span>
+      </div>
+      <div className="meal-history-totals">
+        <span>{meal.total_calories_kcal ?? '—'} kcal</span>
+        <span>{meal.total_protein_g ?? '—'}g P</span>
+        <span>{meal.total_carbs_g ?? '—'}g C</span>
+        <span>{meal.total_fat_g ?? '—'}g F</span>
+      </div>
     </div>
   );
 }

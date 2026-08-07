@@ -21,6 +21,7 @@ export default function LedgerCard({ ledger }) {
     );
   }
 
+  // active_paid
   return (
     <div className="ledger-card active">
       <p className="ledger-label">This week's savings</p>
