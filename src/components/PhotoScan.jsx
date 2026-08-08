@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import SwapSuggestions from './SwapSuggestions';
 
 export default function PhotoScan({ userId, onLogged }) {
   const [status, setStatus] = useState('idle'); // idle | uploading | analyzing | done | error
@@ -106,6 +107,7 @@ export default function PhotoScan({ userId, onLogged }) {
               </li>
             ))}
           </ul>
+          <SwapSuggestions mealId={result.meal.id} />
         </div>
       )}
     </div>
