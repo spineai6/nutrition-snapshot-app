@@ -12,41 +12,53 @@ export default function BarcodeScan({ userId, onLogged }) {
   const scannerRef = useRef(null);
   const containerId = 'barcode-scanner-region';
 
+  // Only start the camera AFTER React has actually rendered the container div
+  // (status must be 'scanning' first, then this effect runs on the next paint).
   useEffect(() => {
-    return () => {
-      // Clean up camera on unmount
-      if (scannerRef.current) {
-        scannerRef.current.stop().catch(() => {});
-      }
-    };
-  }, []);
+    if (status !== 'scanning') return;
 
-  async function startScan() {
-    setStatus('scanning');
-    setErrorMsg('');
-    setProduct(null);
+    let cancelled = false;
+    const html5Qrcode = new Html5Qrcode(containerId);
+    scannerRef.current = html5Qrcode;
 
-    try {
-      const html5Qrcode = new Html5Qrcode(containerId);
-      scannerRef.current = html5Qrcode;
-
-      await html5Qrcode.start(
+    html5Qrcode
+      .start(
         { facingMode: 'environment' },
         { fps: 10, qrbox: { width: 250, height: 150 } },
         async (decodedText) => {
-          // Got a barcode — stop the camera immediately, then look it up
+          if (cancelled) return;
+          cancelled = true;
           await html5Qrcode.stop().catch(() => {});
           scannerRef.current = null;
           lookupBarcode(decodedText);
         },
         () => {
-          /* per-frame scan failure, ignore — this fires constantly while aiming the camera */
+          /* per-frame scan miss, fires constantly while aiming — ignore */
         }
-      );
-    } catch (err) {
-      setErrorMsg('Could not access the camera. Check camera permissions and try again.');
-      setStatus('error');
-    }
+      )
+      .catch((err) => {
+        if (cancelled) return;
+        console.error('Camera start failed:', err);
+        setErrorMsg(
+          'Could not access the camera. Make sure you allowed camera permission for this site, and that no other app/tab is using the camera.'
+        );
+        setStatus('error');
+      });
+
+    return () => {
+      cancelled = true;
+      if (scannerRef.current) {
+        scannerRef.current.stop().catch(() => {});
+        scannerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
+  function startScan() {
+    setErrorMsg('');
+    setProduct(null);
+    setStatus('scanning'); // triggers the effect above once the div exists
   }
 
   function stopScan() {
