@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import PhotoScan from '../components/PhotoScan';
+import BarcodeScan from '../components/BarcodeScan';
 import ManualLogForm from '../components/ManualLogForm';
 import MilestoneProgress from '../components/MilestoneProgress';
 import SavingsTeaser from '../components/SavingsTeaser';
@@ -72,6 +73,7 @@ export default function Dashboard({ session }) {
       <main className="dashboard-main">
         <section className="dashboard-log-section">
           <PhotoScan userId={userId} onLogged={handleLogged} />
+          <BarcodeScan userId={userId} onLogged={handleLogged} />
           <button className="manual-log-trigger" onClick={() => setShowManualLog(true)}>
             + Log a meal manually
           </button>
