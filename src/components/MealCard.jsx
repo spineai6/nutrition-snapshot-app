@@ -11,7 +11,7 @@ export default function MealCard({ meal }) {
   return (
     <div className="meal-history-card">
       <div className="meal-history-top">
-        <span className="meal-history-source">{meal.source === 'photo' ? '📸' : '✏️'}</span>
+        <span className="meal-history-source-badge">{meal.source === 'photo' ? '📸' : '✏️'}</span>
         <span className="meal-history-time">{time}</span>
       </div>
       <div className="meal-history-totals">

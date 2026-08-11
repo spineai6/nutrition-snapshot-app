@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import HeroDish from '../components/HeroDish';
 
 export default function AuthScreen() {
   const [mode, setMode] = useState('signup'); // 'signup' | 'login'
@@ -32,9 +33,11 @@ export default function AuthScreen() {
   if (status === 'check-email') {
     return (
       <div className="auth-screen">
+        <HeroDish />
         <div className="auth-card">
+          <div className="auth-brand"><span className="auth-dot" />Nutrition Snapshot</div>
           <h2>Check your inbox</h2>
-          <p>We sent a confirmation link to {email}. Confirm it, then come back and log in.</p>
+          <p className="auth-sub">We sent a confirmation link to {email}. Confirm it, then come back and log in.</p>
           <button className="auth-link-btn" onClick={() => { setMode('login'); setStatus('idle'); }}>
             Back to log in
           </button>
@@ -45,6 +48,10 @@ export default function AuthScreen() {
 
   return (
     <div className="auth-screen">
+      <HeroDish />
+      <div className="auth-hero-text">
+        <p className="auth-hero-tagline">Stop wasting grocery money on nutrition you're not getting.</p>
+      </div>
       <div className="auth-card">
         <div className="auth-brand">
           <span className="auth-dot" />Nutrition Snapshot
