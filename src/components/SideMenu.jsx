@@ -2,7 +2,7 @@ import GroceryListGenerator from './GroceryListGenerator';
 import LedgerCard from './LedgerCard';
 import SavingsTeaser from './SavingsTeaser';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals }) {
   if (!open) return null;
 
   return (
@@ -26,6 +26,7 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
             <p className="side-menu-account-email">{profile?.email}</p>
             <span className="dashboard-tier">{profile?.tier === 'paid' ? 'Premium' : 'Free'}</span>
           </div>
+          <button className="side-menu-edit-goals" onClick={onEditGoals}>Edit weight, age & goal</button>
           <button className="side-menu-logout" onClick={onLogout}>Log out</button>
         </div>
       </div>

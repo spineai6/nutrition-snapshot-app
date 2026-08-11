@@ -69,6 +69,11 @@ export default function Dashboard({ session }) {
     await supabase.auth.signOut();
   }
 
+  async function handleEditGoals() {
+    await supabase.from('profiles').update({ onboarding_completed: false }).eq('id', userId);
+    window.location.reload();
+  }
+
   if (loading) {
     return <div className="dashboard-loading">Loading...</div>;
   }
@@ -131,6 +136,7 @@ export default function Dashboard({ session }) {
         teaser={teaser}
         currentLedger={currentLedger}
         onLogout={handleLogout}
+        onEditGoals={handleEditGoals}
       />
 
       {showManualLog && (
