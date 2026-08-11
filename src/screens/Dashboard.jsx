@@ -7,6 +7,7 @@ import MilestoneProgress from '../components/MilestoneProgress';
 import SavingsTeaser from '../components/SavingsTeaser';
 import LedgerCard from '../components/LedgerCard';
 import MealCard from '../components/MealCard';
+import GroceryListGenerator from '../components/GroceryListGenerator';
 
 export default function Dashboard({ session }) {
   const userId = session.user.id;
@@ -93,6 +94,8 @@ export default function Dashboard({ session }) {
         {currentLedger?.status === 'preview' && <LedgerCard ledger={currentLedger} />}
 
         {profile?.tier === 'free' && <SavingsTeaser amount={teaser} />}
+
+        <GroceryListGenerator defaultBudget={profile?.monthly_budget_inr || 1500} />
 
         <section className="dashboard-history">
           <h3>Recent meals</h3>

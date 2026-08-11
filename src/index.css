@@ -116,6 +116,44 @@ body {
 .teaser-amount { font-family: 'Playfair Display'; font-size: 30px; font-weight: 700; margin: 0 0 4px; }
 .teaser-cta { font-size: 12px; color: var(--ink-soft); margin: 0; }
 
+/* ---- grocery list ---- */
+.grocery-card {
+  background: rgba(255,255,255,0.6); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px;
+}
+.grocery-label { font-weight: 600; font-size: 14.5px; margin: 0 0 6px; }
+.grocery-desc { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 14px; line-height: 1.5; }
+.grocery-input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.grocery-currency { font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); font-size: 14px; }
+.grocery-budget-input {
+  flex: 1; border: 1px solid var(--line-strong); background: rgba(255,255,255,0.7);
+  border-radius: 10px; padding: 9px 10px; font-size: 14px; font-family: 'IBM Plex Mono', monospace;
+}
+.grocery-budget-input:focus { outline: none; border-color: var(--lime-dark); }
+.grocery-generate-btn {
+  border: none; background: var(--ink); color: var(--cream); padding: 10px 16px;
+  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.grocery-generate-btn:hover:not(:disabled) { background: var(--lime-dark); color: var(--ink); }
+.grocery-generate-btn:disabled { opacity: 0.6; cursor: default; }
+.grocery-error { color: #B4432E; font-size: 12.5px; margin: 6px 0 0; }
+.grocery-empty { font-size: 13px; color: var(--ink-soft); margin: 6px 0 0; }
+.grocery-summary {
+  display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 10px;
+}
+.grocery-category { margin-bottom: 12px; }
+.grocery-category-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--lime-dark); margin: 0 0 6px; font-weight: 600;
+}
+.grocery-item-row {
+  display: flex; align-items: baseline; gap: 8px; font-size: 13.5px; padding: 4px 0;
+}
+.grocery-item-name { flex: 1; }
+.grocery-item-qty { color: var(--ink-soft); font-size: 12px; font-family: 'IBM Plex Mono', monospace; }
+.grocery-item-price { font-family: 'IBM Plex Mono', monospace; font-weight: 600; min-width: 44px; text-align: right; }
+
 /* ---- ledger ---- */
 .ledger-card { border-radius: 14px; padding: 18px 20px; }
 .ledger-card.preview { background: var(--navy); color: #EDEBDF; }
