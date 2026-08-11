@@ -4,10 +4,10 @@ import PhotoScan from '../components/PhotoScan';
 import BarcodeScan from '../components/BarcodeScan';
 import ManualLogForm from '../components/ManualLogForm';
 import MilestoneProgress from '../components/MilestoneProgress';
-import SavingsTeaser from '../components/SavingsTeaser';
-import LedgerCard from '../components/LedgerCard';
 import MealCard from '../components/MealCard';
-import GroceryListGenerator from '../components/GroceryListGenerator';
+import MacroProgress from '../components/MacroProgress';
+import HeroDish from '../components/HeroDish';
+import SideMenu from '../components/SideMenu';
 
 export default function Dashboard({ session }) {
   const userId = session.user.id;
@@ -16,11 +16,13 @@ export default function Dashboard({ session }) {
   const [meals, setMeals] = useState([]);
   const [teaser, setTeaser] = useState(null);
   const [currentLedger, setCurrentLedger] = useState(null);
+  const [macroTotals, setMacroTotals] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
-    const [profileRes, mealsRes, teaserRes, ledgerRes] = await Promise.all([
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase
         .from('meals')
@@ -36,12 +38,22 @@ export default function Dashboard({ session }) {
         .order('week_start', { ascending: false })
         .limit(1)
         .maybeSingle(),
+      supabase.rpc('get_todays_macro_totals', { p_user_id: userId }),
     ]);
 
     if (profileRes.data) setProfile(profileRes.data);
     if (mealsRes.data) setMeals(mealsRes.data);
     if (teaserRes.data !== null) setTeaser(teaserRes.data);
     if (ledgerRes.data) setCurrentLedger(ledgerRes.data);
+    if (macroRes.data && macroRes.data[0]) {
+      const row = macroRes.data[0];
+      setMacroTotals({
+        calories: row.calories_kcal,
+        protein: row.protein_g,
+        carbs: row.carbs_g,
+        fat: row.fat_g,
+      });
+    }
     setLoading(false);
   }, [userId]);
 
@@ -61,15 +73,29 @@ export default function Dashboard({ session }) {
     return <div className="dashboard-loading">Loading...</div>;
   }
 
+  const targets = {
+    calories: profile?.calorie_target_kcal,
+    protein: profile?.protein_target_g,
+    carbs: profile?.carb_target_g,
+    fat: profile?.fat_target_g,
+  };
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="dashboard-brand"><span className="auth-dot" />Nutrition Snapshot</div>
-        <div className="dashboard-header-right">
-          <span className="dashboard-tier">{profile?.tier === 'paid' ? 'Premium' : 'Free'}</span>
-          <button className="dashboard-logout" onClick={handleLogout}>Log out</button>
-        </div>
+        <button className="dashboard-menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+          <span /><span /><span />
+        </button>
       </header>
+
+      <section className="dashboard-hero">
+        <HeroDish />
+        <div className="dashboard-hero-content">
+          <p className="dashboard-hero-greeting">Today's plate</p>
+          <MacroProgress totals={macroTotals} targets={targets} />
+        </div>
+      </section>
 
       <main className="dashboard-main">
         <section className="dashboard-log-section">
@@ -80,22 +106,13 @@ export default function Dashboard({ session }) {
           </button>
         </section>
 
-        {/* Ledger takes over once the user has hit preview/frozen/active state; otherwise show the milestone bar */}
-        {currentLedger && currentLedger.status !== 'preview' ? (
-          <LedgerCard ledger={currentLedger} />
-        ) : (
+        {!currentLedger || currentLedger.status === 'preview' ? (
           <MilestoneProgress
             mealsLoggedCount={profile?.meals_logged_count ?? 0}
             milestoneHit={!!profile?.milestone_5_hit_at}
             previewUsed={profile?.preview_week_used}
           />
-        )}
-
-        {currentLedger?.status === 'preview' && <LedgerCard ledger={currentLedger} />}
-
-        {profile?.tier === 'free' && <SavingsTeaser amount={teaser} />}
-
-        <GroceryListGenerator defaultBudget={profile?.monthly_budget_inr || 1500} />
+        ) : null}
 
         <section className="dashboard-history">
           <h3>Recent meals</h3>
@@ -106,6 +123,15 @@ export default function Dashboard({ session }) {
           )}
         </section>
       </main>
+
+      <SideMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        profile={profile}
+        teaser={teaser}
+        currentLedger={currentLedger}
+        onLogout={handleLogout}
+      />
 
       {showManualLog && (
         <ManualLogForm
