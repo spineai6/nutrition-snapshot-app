@@ -504,3 +504,22 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
 .signal-layer-row-label { color: var(--ink-soft); }
 .signal-layer-row-value { font-family: 'IBM Plex Mono'; font-weight: 700; }
 .signal-layer-line { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; }
+
+/* ---- price trend ---- */
+.price-trend {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 18px 20px;
+  box-shadow: var(--hard-shadow-sm);
+}
+.price-trend-label { font-family: 'Archivo Black'; font-size: 14px; margin: 0 0 8px; }
+.price-trend-empty { background: var(--paper-2); border-style: dashed; box-shadow: none; }
+.price-trend-waiting { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; }
+.price-trend-headline { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+.price-trend-headline.up { color: var(--chili-deep); }
+.price-trend-headline.down { color: var(--good); }
+.price-trend-categories { display: flex; flex-direction: column; gap: 6px; }
+.price-trend-cat-row {
+  display: flex; justify-content: space-between; font-size: 12.5px;
+  font-family: 'IBM Plex Mono'; padding: 4px 0; border-bottom: 1px solid var(--line);
+}
+.price-trend-cat-row .up { color: var(--chili-deep); font-weight: 700; }
+.price-trend-cat-row .down { color: var(--good); font-weight: 700; }

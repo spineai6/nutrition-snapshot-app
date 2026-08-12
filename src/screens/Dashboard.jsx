@@ -9,6 +9,7 @@ import MacroProgress from '../components/MacroProgress';
 import MicroProgress from '../components/MicroProgress';
 import { computeMicroTargets } from '../lib/microCalc';
 import SignalLayer from '../components/SignalLayer';
+import PriceTrend from '../components/PriceTrend';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 
@@ -22,6 +23,7 @@ export default function Dashboard({ session }) {
   const [macroTotals, setMacroTotals] = useState(null);
   const [microTotals, setMicroTotals] = useState(null);
   const [signalLayer, setSignalLayer] = useState(null);
+  const [priceTrend, setPriceTrend] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -46,9 +48,10 @@ export default function Dashboard({ session }) {
       supabase.rpc('get_todays_macro_totals', { p_user_id: userId }),
       supabase.rpc('get_todays_micro_totals', { p_user_id: userId }),
       supabase.rpc('get_weekly_signal_layer', { p_user_id: userId }),
+      supabase.rpc('get_price_trend'),
     ]);
 
-    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes] = results;
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes, trendRes] = results;
 
     if (profileRes.data) setProfile(profileRes.data);
     if (mealsRes.data) setMeals(mealsRes.data);
@@ -68,6 +71,18 @@ export default function Dashboard({ session }) {
     }
     if (signalRes.data && signalRes.data[0]) {
       setSignalLayer(signalRes.data[0]);
+    }
+    if (trendRes.data && trendRes.data.length > 0) {
+      const first = trendRes.data[0];
+      setPriceTrend({
+        months_available: first.months_available,
+        latest_month: first.latest_month,
+        previous_month: first.previous_month,
+        pct_change: first.pct_change,
+        categories: trendRes.data
+          .filter((r) => r.category)
+          .map((r) => ({ category: r.category, category_pct_change: r.category_pct_change })),
+      });
     }
     setLoading(false);
   }, [userId]);
@@ -161,6 +176,7 @@ export default function Dashboard({ session }) {
         onLogout={handleLogout}
         onEditGoals={handleEditGoals}
         signalLayer={signalLayer}
+        priceTrend={priceTrend}
       />
 
       {showManualLog && (
