@@ -10,21 +10,37 @@ const CATEGORY_LABELS = {
   fruit: 'Fruit',
   nuts: 'Nuts',
   spice: 'Spices',
+  packaged: 'Packaged',
+  snack: 'Snacks',
 };
 
-const CATEGORY_ORDER = ['grain', 'pulse', 'veg', 'dairy', 'nonveg', 'fruit', 'nuts', 'spice'];
+const CATEGORY_ORDER = ['grain', 'pulse', 'veg', 'dairy', 'nonveg', 'fruit', 'nuts', 'spice', 'packaged', 'snack'];
+
+const MODES = [
+  { value: 'home', label: 'Home cooking', defaultBudget: null },
+  { value: 'hostel', label: 'Hostel / mess', defaultBudget: 1500 },
+];
 
 export default function GroceryListGenerator({ defaultBudget }) {
+  const [mode, setMode] = useState('home');
   const [budget, setBudget] = useState(defaultBudget || 1500);
   const [items, setItems] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  function handleModeChange(newMode) {
+    setMode(newMode);
+    setItems(null);
+    if (newMode === 'hostel') setBudget(1500);
+    else setBudget(defaultBudget || 1500);
+  }
 
   async function handleGenerate() {
     setLoading(true);
     setError(null);
     const { data, error: rpcError } = await supabase.rpc('generate_grocery_list', {
       p_budget_inr: budget,
+      p_mode: mode,
     });
     setLoading(false);
     if (rpcError) {
@@ -49,9 +65,23 @@ export default function GroceryListGenerator({ defaultBudget }) {
     <div className="grocery-card">
       <p className="grocery-label">Budget grocery list</p>
       <p className="grocery-desc">
-        Set a budget and get a real shopping list, weighted toward the most nutrient-dense
-        staples per rupee. Regenerate anytime — it's free.
+        {mode === 'hostel'
+          ? "No-cook supplements to your mess meals — eggs to boil, fruit, milk, roasted chana. Nothing that needs a stove."
+          : "Set a budget and get a real shopping list, weighted toward the most nutrient-dense staples per rupee."}
+        {' '}Regenerate anytime — it's free.
       </p>
+
+      <div className="grocery-mode-toggle">
+        {MODES.map((m) => (
+          <button
+            key={m.value}
+            className={`grocery-mode-btn ${mode === m.value ? 'active' : ''}`}
+            onClick={() => handleModeChange(m.value)}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
 
       <div className="grocery-input-row">
         <span className="grocery-currency">₹</span>

@@ -546,3 +546,11 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   background: var(--paper-2); border: 1px solid var(--good); border-radius: 20px; padding: 2px 8px;
   margin-left: auto;
 }
+
+/* ---- grocery mode toggle ---- */
+.grocery-mode-toggle { display: flex; gap: 6px; margin-bottom: 12px; }
+.grocery-mode-btn {
+  flex: 1; background: var(--paper-2); border: 2px solid var(--ink); color: var(--ink-soft);
+  padding: 8px 10px; border-radius: 10px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.grocery-mode-btn.active { background: var(--mustard-lime); color: var(--ink); }
