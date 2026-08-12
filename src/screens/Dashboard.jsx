@@ -10,6 +10,7 @@ import MicroProgress from '../components/MicroProgress';
 import { computeMicroTargets } from '../lib/microCalc';
 import SignalLayer from '../components/SignalLayer';
 import PriceTrend from '../components/PriceTrend';
+import MicroTrend from '../components/MicroTrend';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 
@@ -24,6 +25,7 @@ export default function Dashboard({ session }) {
   const [microTotals, setMicroTotals] = useState(null);
   const [signalLayer, setSignalLayer] = useState(null);
   const [priceTrend, setPriceTrend] = useState(null);
+  const [microTrend, setMicroTrend] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -49,9 +51,10 @@ export default function Dashboard({ session }) {
       supabase.rpc('get_todays_micro_totals', { p_user_id: userId }),
       supabase.rpc('get_weekly_signal_layer', { p_user_id: userId }),
       supabase.rpc('get_price_trend'),
+      supabase.rpc('get_weekly_micro_trend', { p_user_id: userId }),
     ]);
 
-    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes, trendRes] = results;
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes, trendRes, microTrendRes] = results;
 
     if (profileRes.data) setProfile(profileRes.data);
     if (mealsRes.data) setMeals(mealsRes.data);
@@ -83,6 +86,9 @@ export default function Dashboard({ session }) {
           .filter((r) => r.category)
           .map((r) => ({ category: r.category, category_pct_change: r.category_pct_change })),
       });
+    }
+    if (microTrendRes.data && microTrendRes.data[0]) {
+      setMicroTrend(microTrendRes.data[0]);
     }
     setLoading(false);
   }, [userId]);
@@ -177,6 +183,9 @@ export default function Dashboard({ session }) {
         onEditGoals={handleEditGoals}
         signalLayer={signalLayer}
         priceTrend={priceTrend}
+        microTrend={microTrend}
+        isPaid={profile?.tier === 'paid'}
+        microTargets={microTargets}
       />
 
       {showManualLog && (

@@ -37,11 +37,12 @@ export default function SwapSuggestions({ mealId }) {
           {!loading &&
             swaps &&
             swaps.map((s) => (
-              <div key={s.meal_item_id + s.to_food_name} className="swap-item">
+              <div key={s.meal_item_id + s.to_food_name} className={`swap-item ${s.gap_closing ? 'gap-closing' : ''}`}>
                 <div className="swap-item-row">
                   <span className="swap-from">{s.from_food_name}</span>
                   <span className="swap-arrow">→</span>
                   <span className="swap-to">{s.to_food_name}</span>
+                  {s.gap_closing && <span className="swap-gap-badge">🌱 closes a gap</span>}
                 </div>
                 <div className="swap-item-meta">
                   <span className="swap-nutrient">

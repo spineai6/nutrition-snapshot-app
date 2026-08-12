@@ -3,8 +3,9 @@ import LedgerCard from './LedgerCard';
 import SavingsTeaser from './SavingsTeaser';
 import SignalLayer from './SignalLayer';
 import PriceTrend from './PriceTrend';
+import MicroTrend from './MicroTrend';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets }) {
   if (!open) return null;
 
   return (
@@ -24,6 +25,7 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
 
           <SignalLayer data={signalLayer} />
           <PriceTrend data={priceTrend} />
+          <MicroTrend isPaid={isPaid} data={microTrend} targets={microTargets} onUpgradeClick={() => {}} />
 
           <GroceryListGenerator defaultBudget={profile?.monthly_budget_inr || 1500} />
 

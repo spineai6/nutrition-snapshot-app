@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 import { computeMacroTargets } from '../lib/macroCalc';
 import HeroDish from '../components/HeroDish';
 
-const STEPS = ['gender', 'stats', 'activity', 'goal', 'review'];
+const STEPS = ['gender', 'stats', 'activity', 'goal', 'diet', 'review'];
 
 const GENDER_OPTIONS = [
   { value: 'male', label: 'Male' },
@@ -25,6 +25,12 @@ const GOAL_OPTIONS = [
   { value: 'gain_muscle', label: 'Gain muscle', desc: 'Calorie surplus, high protein' },
 ];
 
+const DIET_OPTIONS = [
+  { value: 'none', label: 'No preference', desc: 'Suggest swaps from anywhere' },
+  { value: 'vegetarian', label: 'Vegetarian', desc: "Swaps stay veg — includes dairy" },
+  { value: 'vegan', label: 'Vegan', desc: 'Swaps stay fully plant-based' },
+];
+
 export default function OnboardingScreen({ session, existingProfile, onComplete }) {
   const [stepIdx, setStepIdx] = useState(0);
   const [form, setForm] = useState({
@@ -34,6 +40,7 @@ export default function OnboardingScreen({ session, existingProfile, onComplete 
     heightCm: existingProfile?.height_cm || '',
     activityLevel: existingProfile?.activity_level || '',
     goal: existingProfile?.goal || '',
+    diet: existingProfile?.diet_preference || 'none',
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -74,6 +81,7 @@ export default function OnboardingScreen({ session, existingProfile, onComplete 
         height_cm: Number(form.heightCm),
         activity_level: form.activityLevel,
         goal: form.goal,
+        diet_preference: form.diet,
         ...targets,
         onboarding_completed: true,
       })
@@ -170,6 +178,26 @@ export default function OnboardingScreen({ session, existingProfile, onComplete 
                   key={opt.value}
                   className={`onboard-option ${form.goal === opt.value ? 'selected' : ''}`}
                   onClick={() => { update('goal', opt.value); next(); }}
+                >
+                  <span className="onboard-option-label">{opt.label}</span>
+                  <span className="onboard-option-desc">{opt.desc}</span>
+                </button>
+              ))}
+            </div>
+            <button className="onboard-back" onClick={back}>Back</button>
+          </>
+        )}
+
+        {step === 'diet' && (
+          <>
+            <h2>Diet preference</h2>
+            <p className="onboard-sub">Keeps swap suggestions safe for how you eat.</p>
+            <div className="onboard-options">
+              {DIET_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  className={`onboard-option ${form.diet === opt.value ? 'selected' : ''}`}
+                  onClick={() => { update('diet', opt.value); next(); }}
                 >
                   <span className="onboard-option-label">{opt.label}</span>
                   <span className="onboard-option-desc">{opt.desc}</span>
