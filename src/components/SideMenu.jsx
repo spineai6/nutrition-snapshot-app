@@ -1,8 +1,9 @@
 import GroceryListGenerator from './GroceryListGenerator';
 import LedgerCard from './LedgerCard';
 import SavingsTeaser from './SavingsTeaser';
+import SignalLayer from './SignalLayer';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer }) {
   if (!open) return null;
 
   return (
@@ -19,6 +20,8 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
           )}
           {currentLedger?.status === 'preview' && <LedgerCard ledger={currentLedger} />}
           {profile?.tier === 'free' && <SavingsTeaser amount={teaser} />}
+
+          <SignalLayer data={signalLayer} />
 
           <GroceryListGenerator defaultBudget={profile?.monthly_budget_inr || 1500} />
 

@@ -8,6 +8,7 @@ import MealCard from '../components/MealCard';
 import MacroProgress from '../components/MacroProgress';
 import MicroProgress from '../components/MicroProgress';
 import { computeMicroTargets } from '../lib/microCalc';
+import SignalLayer from '../components/SignalLayer';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 
@@ -20,12 +21,13 @@ export default function Dashboard({ session }) {
   const [currentLedger, setCurrentLedger] = useState(null);
   const [macroTotals, setMacroTotals] = useState(null);
   const [microTotals, setMicroTotals] = useState(null);
+  const [signalLayer, setSignalLayer] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
-    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes] = await Promise.all([
+    const results = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase
         .from('meals')
@@ -43,7 +45,10 @@ export default function Dashboard({ session }) {
         .maybeSingle(),
       supabase.rpc('get_todays_macro_totals', { p_user_id: userId }),
       supabase.rpc('get_todays_micro_totals', { p_user_id: userId }),
+      supabase.rpc('get_weekly_signal_layer', { p_user_id: userId }),
     ]);
+
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes] = results;
 
     if (profileRes.data) setProfile(profileRes.data);
     if (mealsRes.data) setMeals(mealsRes.data);
@@ -60,6 +65,9 @@ export default function Dashboard({ session }) {
     }
     if (microRes.data && microRes.data[0]) {
       setMicroTotals(microRes.data[0]);
+    }
+    if (signalRes.data && signalRes.data[0]) {
+      setSignalLayer(signalRes.data[0]);
     }
     setLoading(false);
   }, [userId]);
@@ -152,6 +160,7 @@ export default function Dashboard({ session }) {
         currentLedger={currentLedger}
         onLogout={handleLogout}
         onEditGoals={handleEditGoals}
+        signalLayer={signalLayer}
       />
 
       {showManualLog && (
