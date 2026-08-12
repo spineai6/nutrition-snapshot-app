@@ -453,3 +453,35 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   border-radius: 10px; font-weight: 700; font-size: 13.5px; cursor: pointer;
 }
 .side-menu-edit-goals:hover { background: var(--turmeric); }
+
+/* ---- micro progress (paid) ---- */
+.micro-progress {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 18px 20px;
+  box-shadow: var(--hard-shadow-sm);
+}
+.micro-progress-label { font-family: 'Archivo Black'; font-size: 14.5px; margin: 0 0 14px; }
+.micro-rows { display: flex; flex-direction: column; gap: 12px; }
+.micro-row-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.micro-row-label {
+  font-family: 'IBM Plex Mono'; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--ink-soft); font-weight: 700;
+}
+.micro-row-value { font-family: 'IBM Plex Mono'; font-size: 12px; font-weight: 700; }
+.micro-row-target { color: var(--ink-soft); font-weight: 500; }
+.micro-row-bar {
+  height: 9px; background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 6px; overflow: hidden;
+}
+.micro-row-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.micro-disclaimer { font-size: 10.5px; color: var(--ink-soft); margin: 14px 0 0; font-style: italic; }
+
+/* ---- micro locked (free) ---- */
+.micro-locked {
+  background: var(--paper-2); border: 3px dashed var(--line-strong); border-radius: 14px; padding: 18px 20px; text-align: center;
+}
+.micro-locked-label { font-family: 'Archivo Black'; font-size: 14.5px; margin: 0 0 6px; }
+.micro-locked-desc { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 14px; line-height: 1.5; }
+.micro-locked-btn {
+  background: var(--turmeric); border: 2px solid var(--ink); color: var(--ink); padding: 10px 18px;
+  border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; box-shadow: var(--hard-shadow-sm);
+}
+.micro-locked-btn:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }

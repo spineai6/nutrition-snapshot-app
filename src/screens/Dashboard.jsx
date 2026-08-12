@@ -6,6 +6,8 @@ import ManualLogForm from '../components/ManualLogForm';
 import MilestoneProgress from '../components/MilestoneProgress';
 import MealCard from '../components/MealCard';
 import MacroProgress from '../components/MacroProgress';
+import MicroProgress from '../components/MicroProgress';
+import { computeMicroTargets } from '../lib/microCalc';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 
@@ -17,12 +19,13 @@ export default function Dashboard({ session }) {
   const [teaser, setTeaser] = useState(null);
   const [currentLedger, setCurrentLedger] = useState(null);
   const [macroTotals, setMacroTotals] = useState(null);
+  const [microTotals, setMicroTotals] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
-    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes] = await Promise.all([
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase
         .from('meals')
@@ -39,6 +42,7 @@ export default function Dashboard({ session }) {
         .limit(1)
         .maybeSingle(),
       supabase.rpc('get_todays_macro_totals', { p_user_id: userId }),
+      supabase.rpc('get_todays_micro_totals', { p_user_id: userId }),
     ]);
 
     if (profileRes.data) setProfile(profileRes.data);
@@ -53,6 +57,9 @@ export default function Dashboard({ session }) {
         carbs: row.carbs_g,
         fat: row.fat_g,
       });
+    }
+    if (microRes.data && microRes.data[0]) {
+      setMicroTotals(microRes.data[0]);
     }
     setLoading(false);
   }, [userId]);
@@ -84,6 +91,7 @@ export default function Dashboard({ session }) {
     carbs: profile?.carb_target_g,
     fat: profile?.fat_target_g,
   };
+  const microTargets = computeMicroTargets({ gender: profile?.gender });
 
   return (
     <div className="dashboard">
@@ -110,6 +118,13 @@ export default function Dashboard({ session }) {
             + Log a meal manually
           </button>
         </section>
+
+        <MicroProgress
+          isPaid={profile?.tier === 'paid'}
+          totals={microTotals}
+          targets={microTargets}
+          onUpgradeClick={() => setMenuOpen(true)}
+        />
 
         {!currentLedger || currentLedger.status === 'preview' ? (
           <MilestoneProgress
