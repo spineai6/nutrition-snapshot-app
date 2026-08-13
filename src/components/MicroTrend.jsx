@@ -7,20 +7,21 @@ const MICROS = [
   { key: 'vitamin_b12_ug', label: 'B12', unit: 'µg' },
 ];
 
-function trajectoryLine(label, avg, prevAvg, target) {
-  const pctOfTarget = Math.round((avg / target) * 100);
+function trajectoryLine(label, avg, prevAvg, target, unit) {
+  const pctOfTarget = target ? Math.round((avg / target) * 100) : 0;
+  const targetDisplay = `${target}${unit}`;
   if (prevAvg == null) {
-    return `${label}: averaging ${avg}${''} this week, about ${pctOfTarget}% of your daily target.`;
+    return `${label}: averaging ${avg} this week, about ${pctOfTarget}% of your daily target.`;
   }
   const delta = avg - prevAvg;
   const closingGap = avg < target && delta > 0;
   const wideningGap = avg < target && delta < 0;
 
   if (closingGap) {
-    return `${label}: up from last week, closing the gap toward your ${target}-a-day target.`;
+    return `${label}: up from last week, closing the gap toward your ${targetDisplay}-a-day target.`;
   }
   if (wideningGap) {
-    return `${label}: trending down from last week — heading further from your ${target}-a-day target if this continues.`;
+    return `${label}: trending down from last week — heading further from your ${targetDisplay}-a-day target if this continues.`;
   }
   if (avg >= target) {
     return `${label}: on track, averaging ${pctOfTarget}% of target this week.`;
@@ -51,9 +52,9 @@ export default function MicroTrend({ isPaid, data, targets, onUpgradeClick }) {
   const lines = MICROS.map(({ key, label, unit }) => {
     const avg = data[`avg_${key}`];
     const prevAvg = data[`prev_${key}`];
-    const target = targets[key];
+    const target = Number(targets[key]) || 0;
     if (avg == null) return null;
-    return { key, text: trajectoryLine(`${label}`, avg, prevAvg, `${target}${unit}`) };
+    return { key, text: trajectoryLine(label, avg, prevAvg, target, unit) };
   }).filter(Boolean);
 
   const chartData = MICROS.map(({ key, label }) => {
@@ -71,7 +72,7 @@ export default function MicroTrend({ isPaid, data, targets, onUpgradeClick }) {
     <div className="micro-trend">
       <p className="micro-trend-label">Weekly micro trend</p>
       <ResponsiveContainer width="100%" height={150}>
-        <BarChart data={chartData} margin={{ top: 6, right: 6, left: -20, bottom: 0 }} barGap={3}>
+        <BarChart data={chartData} margin={{ top: 6, right: 6, left: 0, bottom: 0 }} barGap={3}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
           <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} width={34} unit="%" />

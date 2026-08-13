@@ -40,7 +40,7 @@ export default function PriceTrend({ data }) {
       <p className={`price-trend-headline ${direction}`}>{headline}</p>
       {data.categories?.length > 0 && (
         <ResponsiveContainer width="100%" height={150}>
-          <BarChart data={data.categories.map((c) => ({ ...c, label: CATEGORY_LABELS[c.category] || c.category }))} margin={{ top: 6, right: 6, left: -20, bottom: 0 }}>
+          <BarChart data={data.categories.map((c) => ({ ...c, label: CATEGORY_LABELS[c.category] || c.category }))} margin={{ top: 6, right: 6, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
             <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} interval={0} angle={-25} textAnchor="end" height={50} />
             <YAxis tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} width={36} unit="%" />

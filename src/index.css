@@ -611,3 +611,20 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer;
 }
 .side-menu-history-btn:hover { background: var(--mustard-lime); }
+
+/* ---- insight card variants ---- */
+.insight-card-tag {
+  font-family: 'IBM Plex Mono'; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ink-soft); margin: 0 0 8px;
+}
+.value-card { border-top: 8px solid var(--turmeric); }
+.shield-card { border-top: 8px solid var(--chili); }
+.trajectory-card { border-top: 8px solid var(--mustard-lime-deep); }
+.insight-fix {
+  background: var(--paper-2); border: 1.5px dashed var(--good); border-radius: 10px;
+  padding: 10px 12px; font-size: 13px; font-weight: 600; margin: 8px 0 4px; line-height: 1.5;
+}
+.trajectory-locked {
+  background: var(--paper-2); border-style: dashed; box-shadow: none; text-align: center;
+}
+.trajectory-locked .insight-card-tag { text-align: left; }

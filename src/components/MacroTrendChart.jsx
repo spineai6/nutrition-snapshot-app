@@ -27,7 +27,7 @@ export default function MacroTrendChart({ history, targetCalories }) {
         <p className="trend-chart-empty">Log a few meals and your trend will show up here.</p>
       ) : (
         <ResponsiveContainer width="100%" height={140}>
-          <AreaChart data={data} margin={{ top: 6, right: 6, left: -20, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 6, right: 6, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="calFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="var(--turmeric)" stopOpacity={0.55} />
@@ -36,7 +36,7 @@ export default function MacroTrendChart({ history, targetCalories }) {
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
             <XAxis dataKey="day" tick={{ fontSize: 11, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} width={36} />
+            <YAxis tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} width={44} />
             {targetCalories && (
               <ReferenceLine y={targetCalories} stroke="var(--chili)" strokeDasharray="4 4" strokeWidth={1.5} />
             )}
