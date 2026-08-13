@@ -15,6 +15,11 @@ import MacroTrendChart from '../components/MacroTrendChart';
 import InsightsScreen from './InsightsScreen';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
+import MealHistoryScreen from './MealHistoryScreen';
+
+function toISTDateStr(dateInput) {
+  return new Date(dateInput).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+}
 
 export default function Dashboard({ session }) {
   const userId = session.user.id;
@@ -32,6 +37,7 @@ export default function Dashboard({ session }) {
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -42,7 +48,7 @@ export default function Dashboard({ session }) {
         .select('*')
         .eq('user_id', userId)
         .order('logged_at', { ascending: false })
-        .limit(20),
+        .limit(100),
       supabase.rpc('get_weekly_savings_teaser', { p_user_id: userId }),
       supabase
         .from('weekly_ledger')
@@ -130,6 +136,10 @@ export default function Dashboard({ session }) {
   };
   const microTargets = computeMicroTargets({ gender: profile?.gender });
 
+  const todayIST = toISTDateStr(new Date());
+  const todayMeals = meals.filter((m) => toISTDateStr(m.logged_at) === todayIST);
+  const pastMeals = meals.filter((m) => toISTDateStr(m.logged_at) !== todayIST);
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -174,11 +184,18 @@ export default function Dashboard({ session }) {
         ) : null}
 
         <section className="dashboard-history">
-          <h3>Recent meals</h3>
-          {meals.length === 0 ? (
-            <p className="dashboard-empty">No meals logged yet — snap your first one above.</p>
+          <div className="dashboard-history-head">
+            <h3>Today's meals</h3>
+            {pastMeals.length > 0 && (
+              <button className="dashboard-history-link" onClick={() => setHistoryOpen(true)}>
+                Past meals →
+              </button>
+            )}
+          </div>
+          {todayMeals.length === 0 ? (
+            <p className="dashboard-empty">No meals logged today yet — snap your first one above.</p>
           ) : (
-            meals.map((meal) => <MealCard key={meal.id} meal={meal} />)
+            todayMeals.map((meal) => <MealCard key={meal.id} meal={meal} />)
           )}
         </section>
       </main>
@@ -197,11 +214,18 @@ export default function Dashboard({ session }) {
         isPaid={profile?.tier === 'paid'}
         microTargets={microTargets}
         onOpenInsights={() => { setMenuOpen(false); setInsightsOpen(true); }}
+        onOpenHistory={() => { setMenuOpen(false); setHistoryOpen(true); }}
       />
 
       {insightsOpen && (
         <div className="insights-overlay">
           <InsightsScreen session={session} onClose={() => setInsightsOpen(false)} />
+        </div>
+      )}
+
+      {historyOpen && (
+        <div className="insights-overlay">
+          <MealHistoryScreen meals={pastMeals} onClose={() => setHistoryOpen(false)} />
         </div>
       )}
 

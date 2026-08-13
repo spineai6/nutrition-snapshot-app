@@ -592,3 +592,22 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: var(--hard-shadow-sm);
 }
 .side-menu-insights-btn:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* ---- meal history ---- */
+.dashboard-history-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.dashboard-history-head h3 { margin: 0; }
+.dashboard-history-link {
+  background: none; border: none; color: var(--teal-2); font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.dashboard-history-link:hover { text-decoration: underline; }
+.history-day-group { margin-bottom: 20px; }
+.history-day-label {
+  font-family: 'Archivo Black'; font-size: 13px; color: var(--ink-soft); margin: 0 0 10px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+.side-menu-history-btn {
+  background: var(--paper-2); border: 2px solid var(--ink); color: var(--ink); padding: 12px;
+  border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer;
+}
+.side-menu-history-btn:hover { background: var(--mustard-lime); }

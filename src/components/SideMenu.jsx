@@ -5,7 +5,7 @@ import SignalLayer from './SignalLayer';
 import PriceTrend from './PriceTrend';
 import MicroTrend from './MicroTrend';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights, onOpenHistory }) {
   if (!open) return null;
 
   return (
@@ -19,6 +19,9 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
         <div className="side-menu-body">
           <button className="side-menu-insights-btn" onClick={onOpenInsights}>
             📊 View Insights
+          </button>
+          <button className="side-menu-history-btn" onClick={onOpenHistory}>
+            📖 Meal history
           </button>
 
           {currentLedger && currentLedger.status !== 'preview' && (
