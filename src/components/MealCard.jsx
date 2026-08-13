@@ -1,6 +1,6 @@
 import SwapSuggestions from './SwapSuggestions';
 
-export default function MealCard({ meal }) {
+export default function MealCard({ meal, onViewDetail }) {
   const time = new Date(meal.logged_at).toLocaleString('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
@@ -20,6 +20,11 @@ export default function MealCard({ meal }) {
         <span className="macro-pill">{meal.total_carbs_g ?? '—'}g C</span>
         <span className="macro-pill">{meal.total_fat_g ?? '—'}g F</span>
       </div>
+      {onViewDetail && (
+        <button className="meal-detail-link" onClick={() => onViewDetail(meal.id)}>
+          Full nutrient breakdown →
+        </button>
+      )}
       <SwapSuggestions mealId={meal.id} />
     </div>
   );

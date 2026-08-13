@@ -628,3 +628,44 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   background: var(--paper-2); border-style: dashed; box-shadow: none; text-align: center;
 }
 .trajectory-locked .insight-card-tag { text-align: left; }
+
+/* ---- meal detail screen ---- */
+.meal-detail-link {
+  background: none; border: none; color: var(--teal-2); font-size: 12px; font-weight: 700;
+  cursor: pointer; padding: 6px 0 0; text-align: left;
+}
+.meal-detail-link:hover { text-decoration: underline; }
+
+.meal-detail-macros {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 14px 16px;
+  box-shadow: var(--hard-shadow-sm); margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px;
+}
+.meal-detail-macro-row { display: flex; justify-content: space-between; font-size: 13.5px; }
+.meal-detail-macro-row strong { font-family: 'IBM Plex Mono'; }
+
+.meal-detail-table-card {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 16px;
+  box-shadow: var(--hard-shadow-sm); margin-bottom: 16px;
+}
+.meal-detail-table { display: flex; flex-direction: column; margin-top: 10px; }
+.meal-detail-table-head, .meal-detail-table-row {
+  display: grid; grid-template-columns: 1fr 44px 34px 34px 34px; gap: 4px; align-items: center;
+  padding: 7px 0; font-size: 12px;
+}
+.meal-detail-table.micro .meal-detail-table-head,
+.meal-detail-table.micro .meal-detail-table-row {
+  grid-template-columns: 1fr 50px 56px 46px 42px;
+}
+.meal-detail-table-head {
+  font-family: 'IBM Plex Mono'; font-weight: 700; text-transform: uppercase; font-size: 10px;
+  color: var(--ink-soft); border-bottom: 2px solid var(--ink);
+}
+.meal-detail-table-row { border-bottom: 1px solid var(--line); font-family: 'IBM Plex Mono'; }
+.meal-detail-table-row.best { background: rgba(201, 217, 78, 0.25); }
+.meal-detail-food-name { font-family: 'IBM Plex Sans'; font-size: 12.5px; }
+.meal-detail-food-name em { color: var(--ink-soft); font-style: normal; font-size: 10.5px; }
+
+.meal-detail-locked {
+  background: var(--paper-2); border: 3px dashed var(--line-strong); border-radius: 14px;
+  padding: 18px 16px; text-align: center; margin-bottom: 16px;
+}

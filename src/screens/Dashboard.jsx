@@ -16,6 +16,7 @@ import InsightsScreen from './InsightsScreen';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 import MealHistoryScreen from './MealHistoryScreen';
+import MealDetailScreen from './MealDetailScreen';
 
 function toISTDateStr(dateInput) {
   return new Date(dateInput).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
@@ -38,6 +39,7 @@ export default function Dashboard({ session }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [detailMealId, setDetailMealId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -111,8 +113,11 @@ export default function Dashboard({ session }) {
     loadAll();
   }, [loadAll]);
 
-  function handleLogged() {
+  function handleLogged(result) {
     loadAll();
+    if (result?.meal?.id) {
+      setDetailMealId(result.meal.id);
+    }
   }
 
   async function handleLogout() {
@@ -195,7 +200,9 @@ export default function Dashboard({ session }) {
           {todayMeals.length === 0 ? (
             <p className="dashboard-empty">No meals logged today yet — snap your first one above.</p>
           ) : (
-            todayMeals.map((meal) => <MealCard key={meal.id} meal={meal} />)
+            todayMeals.map((meal) => (
+              <MealCard key={meal.id} meal={meal} onViewDetail={setDetailMealId} />
+            ))
           )}
         </section>
       </main>
@@ -225,7 +232,13 @@ export default function Dashboard({ session }) {
 
       {historyOpen && (
         <div className="insights-overlay">
-          <MealHistoryScreen meals={pastMeals} onClose={() => setHistoryOpen(false)} />
+          <MealHistoryScreen meals={pastMeals} onClose={() => setHistoryOpen(false)} onViewDetail={setDetailMealId} />
+        </div>
+      )}
+
+      {detailMealId && (
+        <div className="insights-overlay">
+          <MealDetailScreen mealId={detailMealId} session={session} onClose={() => setDetailMealId(null)} />
         </div>
       )}
 

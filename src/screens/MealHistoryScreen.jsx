@@ -19,7 +19,7 @@ function formatGroupLabel(dateStr) {
   });
 }
 
-export default function MealHistoryScreen({ meals, onClose }) {
+export default function MealHistoryScreen({ meals, onClose, onViewDetail }) {
   const groups = {};
   for (const meal of meals) {
     const day = toISTDateStr(meal.logged_at);
@@ -43,7 +43,7 @@ export default function MealHistoryScreen({ meals, onClose }) {
           <div key={day} className="history-day-group">
             <p className="history-day-label">{formatGroupLabel(day)}</p>
             {groups[day].map((meal) => (
-              <MealCard key={meal.id} meal={meal} />
+              <MealCard key={meal.id} meal={meal} onViewDetail={onViewDetail} />
             ))}
           </div>
         ))
