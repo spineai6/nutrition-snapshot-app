@@ -11,6 +11,8 @@ import { computeMicroTargets } from '../lib/microCalc';
 import SignalLayer from '../components/SignalLayer';
 import PriceTrend from '../components/PriceTrend';
 import MicroTrend from '../components/MicroTrend';
+import MacroTrendChart from '../components/MacroTrendChart';
+import InsightsScreen from './InsightsScreen';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 
@@ -26,8 +28,10 @@ export default function Dashboard({ session }) {
   const [signalLayer, setSignalLayer] = useState(null);
   const [priceTrend, setPriceTrend] = useState(null);
   const [microTrend, setMicroTrend] = useState(null);
+  const [macroHistory, setMacroHistory] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [insightsOpen, setInsightsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -52,9 +56,10 @@ export default function Dashboard({ session }) {
       supabase.rpc('get_weekly_signal_layer', { p_user_id: userId }),
       supabase.rpc('get_price_trend'),
       supabase.rpc('get_weekly_micro_trend', { p_user_id: userId }),
+      supabase.rpc('get_daily_macro_history', { p_user_id: userId, p_days: 7 }),
     ]);
 
-    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes, trendRes, microTrendRes] = results;
+    const [profileRes, mealsRes, teaserRes, ledgerRes, macroRes, microRes, signalRes, trendRes, microTrendRes, historyRes] = results;
 
     if (profileRes.data) setProfile(profileRes.data);
     if (mealsRes.data) setMeals(mealsRes.data);
@@ -89,6 +94,9 @@ export default function Dashboard({ session }) {
     }
     if (microTrendRes.data && microTrendRes.data[0]) {
       setMicroTrend(microTrendRes.data[0]);
+    }
+    if (historyRes.data) {
+      setMacroHistory(historyRes.data);
     }
     setLoading(false);
   }, [userId]);
@@ -148,6 +156,8 @@ export default function Dashboard({ session }) {
           </button>
         </section>
 
+        <MacroTrendChart history={macroHistory} targetCalories={targets.calories} />
+
         <MicroProgress
           isPaid={profile?.tier === 'paid'}
           totals={microTotals}
@@ -186,7 +196,14 @@ export default function Dashboard({ session }) {
         microTrend={microTrend}
         isPaid={profile?.tier === 'paid'}
         microTargets={microTargets}
+        onOpenInsights={() => { setMenuOpen(false); setInsightsOpen(true); }}
       />
+
+      {insightsOpen && (
+        <div className="insights-overlay">
+          <InsightsScreen session={session} onClose={() => setInsightsOpen(false)} />
+        </div>
+      )}
 
       {showManualLog && (
         <ManualLogForm

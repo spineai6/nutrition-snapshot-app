@@ -554,3 +554,41 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   padding: 8px 10px; border-radius: 10px; font-size: 12.5px; font-weight: 700; cursor: pointer;
 }
 .grocery-mode-btn.active { background: var(--mustard-lime); color: var(--ink); }
+
+/* ---- trend charts ---- */
+.trend-chart-card {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 16px 14px 10px;
+  box-shadow: var(--hard-shadow-sm);
+}
+.trend-chart-label { font-family: 'Archivo Black'; font-size: 14px; margin: 0 0 8px; padding: 0 4px; }
+.trend-chart-empty { font-size: 12.5px; color: var(--ink-soft); padding: 0 4px 8px; margin: 0; }
+.trend-chart-note { font-size: 10.5px; color: var(--ink-soft); margin: 4px 4px 0; font-style: italic; }
+
+/* ---- insights screen ---- */
+.insights-overlay { position: fixed; inset: 0; z-index: 300; background: var(--paper); overflow-y: auto; }
+.insights-screen { max-width: 560px; margin: 0 auto; padding: 20px 18px 60px; }
+.insights-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.insights-title { font-family: 'Archivo Black'; font-size: 22px; }
+.insights-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 20px; }
+.insights-loading { font-size: 13.5px; color: var(--ink-soft); text-align: center; padding: 40px 0; }
+.insights-empty {
+  background: var(--paper-2); border: 3px dashed var(--line-strong); border-radius: 14px;
+  padding: 20px; text-align: center; font-size: 13.5px; color: var(--ink-soft); line-height: 1.6;
+}
+.insight-card {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 18px 16px 12px;
+  box-shadow: var(--hard-shadow-sm); margin-bottom: 16px;
+}
+.insight-headline { font-size: 15px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; }
+.insight-meta { font-size: 10.5px; color: var(--ink-soft); margin: 6px 4px 0; font-style: italic; }
+.insights-disclaimer {
+  font-size: 11px; color: var(--ink-soft); line-height: 1.6; text-align: center;
+  margin-top: 10px; padding: 0 10px;
+}
+
+/* ---- side menu insights button ---- */
+.side-menu-insights-btn {
+  background: var(--turmeric); border: 2px solid var(--ink); color: var(--ink); padding: 12px;
+  border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: var(--hard-shadow-sm);
+}
+.side-menu-insights-btn:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }

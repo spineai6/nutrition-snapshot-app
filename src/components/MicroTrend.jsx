@@ -1,3 +1,5 @@
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
+
 const MICROS = [
   { key: 'iron_mg', label: 'Iron', unit: 'mg' },
   { key: 'calcium_mg', label: 'Calcium', unit: 'mg' },
@@ -54,9 +56,35 @@ export default function MicroTrend({ isPaid, data, targets, onUpgradeClick }) {
     return { key, text: trajectoryLine(`${label}`, avg, prevAvg, `${target}${unit}`) };
   }).filter(Boolean);
 
+  const chartData = MICROS.map(({ key, label }) => {
+    const avg = data[`avg_${key}`];
+    const prevAvg = data[`prev_${key}`];
+    const target = targets[key];
+    return {
+      label,
+      thisWeek: avg != null ? Math.round((avg / target) * 100) : 0,
+      lastWeek: prevAvg != null ? Math.round((prevAvg / target) * 100) : 0,
+    };
+  });
+
   return (
     <div className="micro-trend">
       <p className="micro-trend-label">Weekly micro trend</p>
+      <ResponsiveContainer width="100%" height={150}>
+        <BarChart data={chartData} margin={{ top: 6, right: 6, left: -20, bottom: 0 }} barGap={3}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-soft)' }} axisLine={false} tickLine={false} width={34} unit="%" />
+          <ReferenceLine y={100} stroke="var(--good)" strokeDasharray="4 4" strokeWidth={1.5} />
+          <Tooltip
+            contentStyle={{ background: '#fff', border: '2px solid var(--ink)', borderRadius: 8, fontSize: 12, fontFamily: 'IBM Plex Mono' }}
+            formatter={(v, name) => [`${v}% of target`, name === 'thisWeek' ? 'This week' : 'Last week']}
+          />
+          <Bar dataKey="lastWeek" fill="var(--paper-2)" stroke="var(--ink)" strokeWidth={1} radius={[3, 3, 0, 0]} />
+          <Bar dataKey="thisWeek" fill="var(--chili)" stroke="var(--ink)" strokeWidth={1} radius={[3, 3, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="trend-chart-note">Dashed line = 100% of target · light bar = last week, red = this week</p>
       <div className="micro-trend-lines">
         {lines.map((l) => (
           <p key={l.key} className="micro-trend-line">{l.text}</p>
