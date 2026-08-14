@@ -67,7 +67,7 @@ export default function GroceryListGenerator({ defaultBudget }) {
       <p className="grocery-desc">
         {mode === 'hostel'
           ? "No-cook supplements to your mess meals — eggs to boil, fruit, milk, roasted chana. Nothing that needs a stove."
-          : "Set a budget and get a real shopping list, weighted toward the most nutrient-dense staples per rupee."}
+          : "Set a budget and get a real shopping list, weighted toward the most nutrient-dense staples per rupee — rounded to sizes you can actually buy (250g, 500g, 1kg packs)."}
         {' '}Regenerate anytime — it's free.
       </p>
 

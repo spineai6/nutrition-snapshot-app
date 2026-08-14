@@ -17,6 +17,7 @@ import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
 import MealHistoryScreen from './MealHistoryScreen';
 import MealDetailScreen from './MealDetailScreen';
+import SwapSimulatorScreen from './SwapSimulatorScreen';
 
 function toISTDateStr(dateInput) {
   return new Date(dateInput).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
@@ -40,6 +41,7 @@ export default function Dashboard({ session }) {
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [detailMealId, setDetailMealId] = useState(null);
+  const [simulatorOpen, setSimulatorOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -222,6 +224,7 @@ export default function Dashboard({ session }) {
         microTargets={microTargets}
         onOpenInsights={() => { setMenuOpen(false); setInsightsOpen(true); }}
         onOpenHistory={() => { setMenuOpen(false); setHistoryOpen(true); }}
+        onOpenSimulator={() => { setMenuOpen(false); setSimulatorOpen(true); }}
       />
 
       {insightsOpen && (
@@ -239,6 +242,12 @@ export default function Dashboard({ session }) {
       {detailMealId && (
         <div className="insights-overlay">
           <MealDetailScreen mealId={detailMealId} session={session} onClose={() => setDetailMealId(null)} />
+        </div>
+      )}
+
+      {simulatorOpen && (
+        <div className="insights-overlay">
+          <SwapSimulatorScreen session={session} onClose={() => setSimulatorOpen(false)} />
         </div>
       )}
 

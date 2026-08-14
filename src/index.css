@@ -669,3 +669,31 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   background: var(--paper-2); border: 3px dashed var(--line-strong); border-radius: 14px;
   padding: 18px 16px; text-align: center; margin-bottom: 16px;
 }
+
+/* ---- swap simulator ---- */
+.simulator-controls {
+  background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 16px;
+  box-shadow: var(--hard-shadow-sm); margin-bottom: 16px; display: flex; flex-direction: column; gap: 14px;
+}
+.simulator-label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+.simulator-select {
+  border: 2px solid var(--ink); border-radius: 10px; padding: 11px 12px; font-size: 13.5px;
+  font-family: 'IBM Plex Sans'; background: var(--paper); color: var(--ink);
+}
+.simulator-row { display: flex; gap: 12px; }
+.simulator-row .simulator-label { flex: 1; }
+.simulator-input {
+  border: 2px solid var(--ink); border-radius: 10px; padding: 10px 12px; font-size: 14px;
+  font-family: 'IBM Plex Mono';
+}
+.simulator-result { border-top: 8px solid var(--mustard-lime-deep); }
+.simulator-nutrient-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0;
+}
+.simulator-nutrient {
+  background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 10px; padding: 8px 10px;
+  display: flex; justify-content: space-between; font-size: 12px;
+}
+.simulator-nutrient strong { font-family: 'IBM Plex Mono'; }
+.simulator-nutrient.up strong { color: var(--good); }
+.simulator-nutrient.down strong { color: var(--chili-deep); }
