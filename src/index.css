@@ -697,3 +697,21 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
 .simulator-nutrient strong { font-family: 'IBM Plex Mono'; }
 .simulator-nutrient.up strong { color: var(--good); }
 .simulator-nutrient.down strong { color: var(--chili-deep); }
+
+/* ---- price correction ---- */
+.price-correction-search-input {
+  border: 2px solid var(--ink); border-radius: 10px; padding: 11px 12px; font-size: 14px;
+  font-family: 'IBM Plex Sans'; background: var(--paper);
+}
+.price-correction-card { border-top: 8px solid var(--turmeric); }
+.price-correction-summary {
+  background: var(--paper-2); border-radius: 10px; padding: 10px 12px; margin: 8px 0 14px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.price-correction-summary-row { display: flex; justify-content: space-between; font-size: 13px; }
+.price-correction-summary-row strong { font-family: 'IBM Plex Mono'; }
+.price-correction-summary-row.community strong { color: var(--good); }
+.price-correction-thanks {
+  background: rgba(201, 217, 78, 0.25); border: 1.5px solid var(--good); border-radius: 10px;
+  padding: 12px; font-size: 13.5px; font-weight: 600; text-align: center; margin: 10px 0;
+}

@@ -5,7 +5,7 @@ import SignalLayer from './SignalLayer';
 import PriceTrend from './PriceTrend';
 import MicroTrend from './MicroTrend';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights, onOpenHistory, onOpenSimulator }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights, onOpenHistory, onOpenSimulator, onOpenPriceCorrection }) {
   if (!open) return null;
 
   return (
@@ -25,6 +25,9 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
           </button>
           <button className="side-menu-history-btn" onClick={onOpenSimulator}>
             🔄 Swap Simulator
+          </button>
+          <button className="side-menu-history-btn" onClick={onOpenPriceCorrection}>
+            💰 Report a price
           </button>
 
           {currentLedger && currentLedger.status !== 'preview' && (
