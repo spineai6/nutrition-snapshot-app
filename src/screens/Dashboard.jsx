@@ -20,6 +20,7 @@ import MealDetailScreen from './MealDetailScreen';
 import SwapSimulatorScreen from './SwapSimulatorScreen';
 import PriceCorrectionScreen from './PriceCorrectionScreen';
 import ShareCardScreen from './ShareCardScreen';
+import AssistantScreen from './AssistantScreen';
 
 function toISTDateStr(dateInput) {
   return new Date(dateInput).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
@@ -46,6 +47,7 @@ export default function Dashboard({ session }) {
   const [simulatorOpen, setSimulatorOpen] = useState(false);
   const [priceCorrectionOpen, setPriceCorrectionOpen] = useState(false);
   const [shareCardOpen, setShareCardOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -231,6 +233,7 @@ export default function Dashboard({ session }) {
         onOpenSimulator={() => { setMenuOpen(false); setSimulatorOpen(true); }}
         onOpenPriceCorrection={() => { setMenuOpen(false); setPriceCorrectionOpen(true); }}
         onOpenShareCard={() => { setMenuOpen(false); setShareCardOpen(true); }}
+        onOpenAssistant={() => { setMenuOpen(false); setAssistantOpen(true); }}
       />
 
       {insightsOpen && (
@@ -266,6 +269,12 @@ export default function Dashboard({ session }) {
       {shareCardOpen && (
         <div className="insights-overlay">
           <ShareCardScreen session={session} onClose={() => setShareCardOpen(false)} />
+        </div>
+      )}
+
+      {assistantOpen && (
+        <div className="insights-overlay">
+          <AssistantScreen session={session} onClose={() => setAssistantOpen(false)} />
         </div>
       )}
 
