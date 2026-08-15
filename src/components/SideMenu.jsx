@@ -5,7 +5,7 @@ import SignalLayer from './SignalLayer';
 import PriceTrend from './PriceTrend';
 import MicroTrend from './MicroTrend';
 
-export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights, onOpenHistory, onOpenSimulator, onOpenPriceCorrection }) {
+export default function SideMenu({ open, onClose, profile, teaser, currentLedger, onLogout, onEditGoals, signalLayer, priceTrend, microTrend, isPaid, microTargets, onOpenInsights, onOpenHistory, onOpenSimulator, onOpenPriceCorrection, onOpenShareCard }) {
   if (!open) return null;
 
   return (
@@ -17,6 +17,9 @@ export default function SideMenu({ open, onClose, profile, teaser, currentLedger
         </div>
 
         <div className="side-menu-body">
+          <button className="side-menu-share-btn" onClick={onOpenShareCard}>
+            📤 Share my week
+          </button>
           <button className="side-menu-insights-btn" onClick={onOpenInsights}>
             📊 View Insights
           </button>

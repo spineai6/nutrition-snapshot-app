@@ -19,6 +19,7 @@ import MealHistoryScreen from './MealHistoryScreen';
 import MealDetailScreen from './MealDetailScreen';
 import SwapSimulatorScreen from './SwapSimulatorScreen';
 import PriceCorrectionScreen from './PriceCorrectionScreen';
+import ShareCardScreen from './ShareCardScreen';
 
 function toISTDateStr(dateInput) {
   return new Date(dateInput).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
@@ -44,6 +45,7 @@ export default function Dashboard({ session }) {
   const [detailMealId, setDetailMealId] = useState(null);
   const [simulatorOpen, setSimulatorOpen] = useState(false);
   const [priceCorrectionOpen, setPriceCorrectionOpen] = useState(false);
+  const [shareCardOpen, setShareCardOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadAll = useCallback(async () => {
@@ -228,6 +230,7 @@ export default function Dashboard({ session }) {
         onOpenHistory={() => { setMenuOpen(false); setHistoryOpen(true); }}
         onOpenSimulator={() => { setMenuOpen(false); setSimulatorOpen(true); }}
         onOpenPriceCorrection={() => { setMenuOpen(false); setPriceCorrectionOpen(true); }}
+        onOpenShareCard={() => { setMenuOpen(false); setShareCardOpen(true); }}
       />
 
       {insightsOpen && (
@@ -257,6 +260,12 @@ export default function Dashboard({ session }) {
       {priceCorrectionOpen && (
         <div className="insights-overlay">
           <PriceCorrectionScreen session={session} onClose={() => setPriceCorrectionOpen(false)} />
+        </div>
+      )}
+
+      {shareCardOpen && (
+        <div className="insights-overlay">
+          <ShareCardScreen session={session} onClose={() => setShareCardOpen(false)} />
         </div>
       )}
 

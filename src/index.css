@@ -715,3 +715,52 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   background: rgba(201, 217, 78, 0.25); border: 1.5px solid var(--good); border-radius: 10px;
   padding: 12px; font-size: 13.5px; font-weight: 600; text-align: center; margin: 10px 0;
 }
+
+/* ---- share card menu button ---- */
+.side-menu-share-btn {
+  background: var(--chili); border: 2px solid var(--ink); color: #fff; padding: 12px;
+  border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: var(--hard-shadow-sm);
+}
+.side-menu-share-btn:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* ---- exportable share card (hardcoded hex — html2canvas needs concrete colors) ---- */
+.share-card-preview-wrap { display: flex; justify-content: center; margin-bottom: 4px; }
+.share-card {
+  width: 320px;
+  background: #0B3D3B;
+  border: 4px solid #1B1B17;
+  border-radius: 20px;
+  padding: 28px 24px 20px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: #FBF3E4;
+  box-sizing: border-box;
+}
+.share-card-brand {
+  display: flex; align-items: center; gap: 8px; font-family: 'Archivo Black', sans-serif;
+  font-size: 15px; margin-bottom: 22px;
+}
+.share-card-dot { width: 12px; height: 12px; border-radius: 50%; background: #F0A202; border: 2px solid #1B1B17; }
+.share-card-headline-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #F0A202; margin: 0 0 6px;
+}
+.share-card-headline {
+  font-family: 'Archivo Black', sans-serif; font-size: 48px; margin: 0 0 20px; line-height: 1;
+}
+.share-card-stats { display: flex; gap: 14px; margin-bottom: 16px; }
+.share-card-stat {
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.25); border-radius: 12px;
+  padding: 10px 14px; flex: 1; display: flex; flex-direction: column; gap: 2px;
+}
+.share-card-stat-value { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 700; }
+.share-card-stat-label { font-size: 10.5px; color: rgba(251,243,228,0.7); }
+.share-card-value-food {
+  background: rgba(240,162,2,0.15); border: 1.5px solid #F0A202; border-radius: 10px;
+  padding: 9px 12px; font-size: 12px; font-weight: 600; margin-bottom: 18px;
+}
+.share-card-footer {
+  border-top: 1.5px solid rgba(255,255,255,0.2); padding-top: 12px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.share-card-footer span:first-child { font-size: 11px; color: rgba(251,243,228,0.75); }
+.share-card-url { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 700; color: #C9D94E; }
