@@ -818,3 +818,9 @@ h1, h2, h3, h4 { font-family: 'Archivo Black', sans-serif; text-transform: none;
   background: var(--chili); color: #fff; border: 2px solid var(--ink); border-radius: 12px;
   width: 46px; display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
+
+/* ---- assistant quota indicator ---- */
+.assistant-quota {
+  font-family: 'IBM Plex Mono'; font-size: 11px; color: var(--ink-soft); text-align: center;
+  margin: 0 0 10px;
+}
