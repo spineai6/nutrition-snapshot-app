@@ -89,7 +89,7 @@ export default function PriceCorrectionScreen({ session, onClose }) {
     <div className="insights-screen">
       <div className="insights-header">
         <span className="insights-title">Report a price</span>
-        <button className="side-menu-close" onClick={onClose}>✕</button>
+        {onClose && <button className="side-menu-close" onClick={onClose}>✕</button>}
       </div>
       <p className="insights-sub">
         Our prices are regional estimates. Tell us what you actually paid — it helps everyone get more accurate numbers.

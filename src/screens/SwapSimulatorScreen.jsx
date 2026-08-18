@@ -47,7 +47,7 @@ export default function SwapSimulatorScreen({ session, onClose }) {
     <div className="insights-screen">
       <div className="insights-header">
         <span className="insights-title">Swap Simulator</span>
-        <button className="side-menu-close" onClick={onClose}>✕</button>
+        {onClose && <button className="side-menu-close" onClick={onClose}>✕</button>}
       </div>
       <p className="insights-sub">Pick a swap, tell us how often you'd actually eat it — see the real monthly impact before you commit.</p>
 

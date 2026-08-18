@@ -8,17 +8,15 @@ import MealCard from '../components/MealCard';
 import MacroProgress from '../components/MacroProgress';
 import MicroProgress from '../components/MicroProgress';
 import { computeMicroTargets } from '../lib/microCalc';
-import SignalLayer from '../components/SignalLayer';
-import PriceTrend from '../components/PriceTrend';
-import MicroTrend from '../components/MicroTrend';
 import MacroTrendChart from '../components/MacroTrendChart';
 import InsightsScreen from './InsightsScreen';
 import HeroDish from '../components/HeroDish';
 import SideMenu from '../components/SideMenu';
+import TabBar from '../components/TabBar';
+import ToolsTab from '../components/ToolsTab';
+import MoreTab from '../components/MoreTab';
 import MealHistoryScreen from './MealHistoryScreen';
 import MealDetailScreen from './MealDetailScreen';
-import SwapSimulatorScreen from './SwapSimulatorScreen';
-import PriceCorrectionScreen from './PriceCorrectionScreen';
 import ShareCardScreen from './ShareCardScreen';
 import AssistantScreen from './AssistantScreen';
 
@@ -41,11 +39,9 @@ export default function Dashboard({ session }) {
   const [macroHistory, setMacroHistory] = useState(null);
   const [showManualLog, setShowManualLog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [insightsOpen, setInsightsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
   const [historyOpen, setHistoryOpen] = useState(false);
   const [detailMealId, setDetailMealId] = useState(null);
-  const [simulatorOpen, setSimulatorOpen] = useState(false);
-  const [priceCorrectionOpen, setPriceCorrectionOpen] = useState(false);
   const [shareCardOpen, setShareCardOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -152,95 +148,113 @@ export default function Dashboard({ session }) {
   const todayIST = toISTDateStr(new Date());
   const todayMeals = meals.filter((m) => toISTDateStr(m.logged_at) === todayIST);
   const pastMeals = meals.filter((m) => toISTDateStr(m.logged_at) !== todayIST);
+  const isPaid = profile?.tier === 'paid';
 
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="dashboard-brand"><span className="auth-dot" />Nutrition Snapshot</div>
-        <button className="dashboard-menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+        <button className="dashboard-menu-btn" onClick={() => setMenuOpen(true)} aria-label="Account">
           <span /><span /><span />
         </button>
       </header>
 
-      <section className="dashboard-hero">
-        <HeroDish />
-        <div className="dashboard-hero-content">
-          <p className="dashboard-hero-greeting">Today's plate</p>
-          <MacroProgress totals={macroTotals} targets={targets} />
-        </div>
-      </section>
+      {activeTab === 'home' && (
+        <>
+          <section className="dashboard-hero">
+            <HeroDish />
+            <div className="dashboard-hero-content">
+              <p className="dashboard-hero-greeting">Today's plate</p>
+              <MacroProgress totals={macroTotals} targets={targets} />
+            </div>
+          </section>
 
-      <main className="dashboard-main">
-        <section className="dashboard-log-section">
-          <PhotoScan userId={userId} onLogged={handleLogged} />
-          <BarcodeScan userId={userId} onLogged={handleLogged} />
-          <button className="manual-log-trigger" onClick={() => setShowManualLog(true)}>
-            + Log a meal manually
-          </button>
-        </section>
-
-        <MacroTrendChart history={macroHistory} targetCalories={targets.calories} />
-
-        <MicroProgress
-          isPaid={profile?.tier === 'paid'}
-          totals={microTotals}
-          targets={microTargets}
-          onUpgradeClick={() => setMenuOpen(true)}
-        />
-
-        {!currentLedger || currentLedger.status === 'preview' ? (
-          <MilestoneProgress
-            mealsLoggedCount={profile?.meals_logged_count ?? 0}
-            milestoneHit={!!profile?.milestone_5_hit_at}
-            previewUsed={profile?.preview_week_used}
-          />
-        ) : null}
-
-        <section className="dashboard-history">
-          <div className="dashboard-history-head">
-            <h3>Today's meals</h3>
-            {pastMeals.length > 0 && (
-              <button className="dashboard-history-link" onClick={() => setHistoryOpen(true)}>
-                Past meals →
+          <main className="dashboard-main">
+            <section className="dashboard-log-section">
+              <PhotoScan userId={userId} onLogged={handleLogged} />
+              <BarcodeScan userId={userId} onLogged={handleLogged} />
+              <button className="manual-log-trigger" onClick={() => setShowManualLog(true)}>
+                + Log a meal manually
               </button>
-            )}
-          </div>
-          {todayMeals.length === 0 ? (
-            <p className="dashboard-empty">No meals logged today yet — snap your first one above.</p>
-          ) : (
-            todayMeals.map((meal) => (
-              <MealCard key={meal.id} meal={meal} onViewDetail={setDetailMealId} />
-            ))
-          )}
-        </section>
-      </main>
+            </section>
+
+            <MacroTrendChart history={macroHistory} targetCalories={targets.calories} />
+
+            <MicroProgress
+              isPaid={isPaid}
+              totals={microTotals}
+              targets={microTargets}
+              onUpgradeClick={() => setActiveTab('more')}
+            />
+
+            {!currentLedger || currentLedger.status === 'preview' ? (
+              <MilestoneProgress
+                mealsLoggedCount={profile?.meals_logged_count ?? 0}
+                milestoneHit={!!profile?.milestone_5_hit_at}
+                previewUsed={profile?.preview_week_used}
+              />
+            ) : null}
+
+            <section className="dashboard-history">
+              <div className="dashboard-history-head">
+                <h3>Today's meals</h3>
+                {pastMeals.length > 0 && (
+                  <button className="dashboard-history-link" onClick={() => setHistoryOpen(true)}>
+                    Past meals →
+                  </button>
+                )}
+              </div>
+              {todayMeals.length === 0 ? (
+                <p className="dashboard-empty">No meals logged today yet — snap your first one above.</p>
+              ) : (
+                todayMeals.map((meal) => (
+                  <MealCard key={meal.id} meal={meal} onViewDetail={setDetailMealId} />
+                ))
+              )}
+            </section>
+          </main>
+        </>
+      )}
+
+      {activeTab === 'insights' && (
+        <main className="dashboard-main">
+          <InsightsScreen session={session} />
+        </main>
+      )}
+
+      {activeTab === 'tools' && (
+        <main className="dashboard-main">
+          <ToolsTab session={session} defaultBudget={profile?.monthly_budget_inr || 1500} />
+        </main>
+      )}
+
+      {activeTab === 'more' && (
+        <main className="dashboard-main">
+          <MoreTab
+            profile={profile}
+            teaser={teaser}
+            currentLedger={currentLedger}
+            signalLayer={signalLayer}
+            priceTrend={priceTrend}
+            microTrend={microTrend}
+            isPaid={isPaid}
+            microTargets={microTargets}
+            onOpenAssistant={() => setAssistantOpen(true)}
+            onOpenShareCard={() => setShareCardOpen(true)}
+            onOpenHistory={() => setHistoryOpen(true)}
+          />
+        </main>
+      )}
+
+      <TabBar active={activeTab} onChange={setActiveTab} />
 
       <SideMenu
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         profile={profile}
-        teaser={teaser}
-        currentLedger={currentLedger}
         onLogout={handleLogout}
         onEditGoals={handleEditGoals}
-        signalLayer={signalLayer}
-        priceTrend={priceTrend}
-        microTrend={microTrend}
-        isPaid={profile?.tier === 'paid'}
-        microTargets={microTargets}
-        onOpenInsights={() => { setMenuOpen(false); setInsightsOpen(true); }}
-        onOpenHistory={() => { setMenuOpen(false); setHistoryOpen(true); }}
-        onOpenSimulator={() => { setMenuOpen(false); setSimulatorOpen(true); }}
-        onOpenPriceCorrection={() => { setMenuOpen(false); setPriceCorrectionOpen(true); }}
-        onOpenShareCard={() => { setMenuOpen(false); setShareCardOpen(true); }}
-        onOpenAssistant={() => { setMenuOpen(false); setAssistantOpen(true); }}
       />
-
-      {insightsOpen && (
-        <div className="insights-overlay">
-          <InsightsScreen session={session} onClose={() => setInsightsOpen(false)} />
-        </div>
-      )}
 
       {historyOpen && (
         <div className="insights-overlay">
@@ -251,18 +265,6 @@ export default function Dashboard({ session }) {
       {detailMealId && (
         <div className="insights-overlay">
           <MealDetailScreen mealId={detailMealId} session={session} onClose={() => setDetailMealId(null)} />
-        </div>
-      )}
-
-      {simulatorOpen && (
-        <div className="insights-overlay">
-          <SwapSimulatorScreen session={session} onClose={() => setSimulatorOpen(false)} />
-        </div>
-      )}
-
-      {priceCorrectionOpen && (
-        <div className="insights-overlay">
-          <PriceCorrectionScreen session={session} onClose={() => setPriceCorrectionOpen(false)} />
         </div>
       )}
 

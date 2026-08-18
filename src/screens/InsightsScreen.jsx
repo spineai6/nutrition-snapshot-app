@@ -74,7 +74,7 @@ export default function InsightsScreen({ session, onClose }) {
       <div className="insights-screen">
         <div className="insights-header">
           <span className="insights-title">Insights</span>
-          <button className="side-menu-close" onClick={onClose}>✕</button>
+          {onClose && <button className="side-menu-close" onClick={onClose}>✕</button>}
         </div>
         <p className="insights-loading">Crunching your last 30 days...</p>
       </div>
@@ -93,7 +93,7 @@ export default function InsightsScreen({ session, onClose }) {
     <div className="insights-screen">
       <div className="insights-header">
         <span className="insights-title">Insights</span>
-        <button className="side-menu-close" onClick={onClose}>✕</button>
+        {onClose && <button className="side-menu-close" onClick={onClose}>✕</button>}
       </div>
       <p className="insights-sub">Patterns found in your last 30 days of logged meals.</p>
 
